@@ -231,7 +231,7 @@ URxvt*scrollBar: false
 ! Compile frills: Associate string with keysym sym. The intervening resource name keysym. cannot be omitted.
 ! URxvt*keysym.sym: string
 
-! URxvt*perl-ext-common: string
+URxvt*perl-ext-common: default,clipboard
 
 ! Comma-separated list(s) of perl extension scripts (default: "default") to use in this terminal instance; option -pe.
 ! URxvt*perl-ext: string
