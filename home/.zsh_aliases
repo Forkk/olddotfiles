@@ -43,7 +43,7 @@ alias netstatus='systemctl status netctl-auto@wlp13s0.service'
 alias rlshrc='source /home/forkk/.bashrc' # Reload .bashrc
 alias rlbashrc='rlshrc'
 
-alias evimrc='vim /home/forkk/.vimrc && svimrc up' # Edit .vimrc and sync it with the forkk.net server.
+alias evimrc='vim /home/forkk/.vimrc' # Edit .vimrc
 alias eshrc='vim /home/forkk/.bashrc && source /home/forkk/.bashrc' # Edit .bashrc and reload it.
 alias ebashrc='eshrc'
 alias eobrc='vim /home/forkk/.config/openbox/rc.xml && killall -USR2 openbox' # Edit openbox config and reload it.
