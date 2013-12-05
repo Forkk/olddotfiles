@@ -1,0 +1,146 @@
+#!/usr/bin/env python
+#
+#    byobu-select-session
+#    Copyright (C) 2010 Canonical Ltd.
+#    Copyright (C) 2012 Dustin Kirkland <kirkland@byobu.co>
+#
+#    Authors: Dustin Kirkland <kirkland@byobu.co>
+#             Ryan C. Thompson <rct@thompsonclan.org>
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, version 3 of the License.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+# vim: set expandtab ts=4 sw=4 sts=4:
+
+
+import os
+import re
+import sys
+import subprocess
+
+PKG = "byobu"
+SHELL = os.getenv("SHELL", "/bin/bash")
+HOME = os.getenv("HOME")
+BYOBU_CONFIG_DIR = os.getenv("BYOBU_CONFIG_DIR", HOME + "/.byobu")
+BYOBU_BACKEND = os.getenv("BYOBU_BACKEND", "tmux")
+choice = None
+sessions = []
+text = []
+
+BYOBU_UPDATE_ENVVARS = ["DISPLAY", "DBUS_SESSION_BUS_ADDRESS", "SESSION_MANAGER", "GPG_AGENT_INFO", "XDG_SESSION_COOKIE", "XDG_SESSION_PATH", "GNOME_KEYRING_CONTROL", "GNOME_KEYRING_PID", "GPG_AGENT_INFO", "SSH_AUTH_SOCK", "SSH_AGENT_PID"]
+
+
+def get_sessions():
+    sessions = []
+    i = 0
+    output = False
+    if BYOBU_BACKEND == "screen":
+        try:
+            output = subprocess.Popen(["screen", "-ls"], stdout=subprocess.PIPE).communicate()[0]
+        except subprocess.CalledProcessError as cpe:
+            # screen -ls seems to always return 1
+            if cpe.returncode != 1:
+                raise
+            else:
+                output = cpe.output
+        if not sys.stdout.encoding is None:
+            output = output.decode(sys.stdout.encoding)
+        if output:
+            for s in output.splitlines():
+                s = re.sub(r'\s+', ' ', s)
+                # Ignore hidden sessions (named sessions that start with a ".")
+                if s and s != " " and (s.find(" ") == 0 and len(s) > 1 and s.count("..") == 0):
+                    text.append("screen: %s" % s.strip())
+                    items = s.split(" ")
+                    sessions.append("screen____%s" % items[1])
+                    i += 1
+    if BYOBU_BACKEND == "tmux":
+        output = subprocess.Popen(["tmux", "list-sessions"], stdout=subprocess.PIPE).communicate()[0]
+        output = output.decode(sys.stdout.encoding)
+        if output:
+            for s in output.splitlines():
+                if s:
+                    text.append("tmux: %s" % s.strip())
+                    sessions.append("tmux____%s" % s.split(":")[0])
+                    i += 1
+    return sessions
+
+
+def update_environment(session):
+    backend, session_name = session.split("____", 2)
+    for var in BYOBU_UPDATE_ENVVARS:
+        value = os.getenv(var)
+        if value:
+            if backend == "tmux":
+                cmd = ["tmux", "setenv", "-t", session_name, var, value]
+            else:
+                cmd = ["screen", "-S", session_name, "-X", "setenv", var, value]
+            print("Sending variable: %s" % (cmd, ))
+            subprocess.call(cmd, stdout=open(os.devnull, "w"))
+
+
+def attach_session(session):
+    print("Attaching: [%s]\n" % session)
+    update_environment(session)
+    backend, session_name = session.split("____", 2)
+    # must use the binary, not the wrapper!
+    if backend == "tmux":
+        os.execvp("tmux", ["", "-2", "attach", "-t", session_name])
+    else:
+        os.execvp("screen", ["", "-AOxRR", session_name])
+
+sessions = get_sessions()
+
+sys.stdout.write("\nWelcome! Please choose an option.\n\n")
+while True:
+    i = 1
+
+    sys.stdout.write("  n - Create a new Byobu session (%s)\n" % BYOBU_BACKEND)
+    sys.stdout.write("  s - Run a shell without Byobu (%s)\n" % SHELL)
+
+    for s in text:
+        sys.stdout.write("  %d - %s\n" % (i, s))
+        i += 1
+
+    try:
+        choice = input("\nChoose [n]: ").strip()
+        cint = -1
+        try: cint = int(choice)
+        except: pass
+        print(choice)
+        if cint >= 1 and cint < i or choice in ["n", "s"]:
+                break
+        else:
+                tries += 1
+                choice = ""
+                sys.stderr.write("\nERROR: Invalid input\n")
+    except KeyboardInterrupt:
+        print()
+        sys.exit(0)
+    except Exception as e:
+        print(e)
+        choice = None
+        sys.stderr.write("\nERROR: Exception\n")
+
+if choice:
+    if choice == "n":
+        # Create a new session
+        if BYOBU_BACKEND == "tmux":
+            os.execvp("byobu", ["", "new-session", SHELL])
+        else:
+            os.execvp("byobu", ["", SHELL])
+    elif choice == "s":
+        os.execvp(SHELL, [SHELL])
+    else:
+        # Attach to the chosen session; must use the binary, not the wrapper!
+        attach_session(sessions[int(choice) - 1])
+        

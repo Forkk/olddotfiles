@@ -1,0 +1,50 @@
+# Alias for easily activating Python virtual environments.
+alias venv="source venv/bin/activate"
+alias syncvenv="venv && export SYNC_SETTINGS=/home/forkk/Projects/synctron_config.py"
+
+alias dc='dotcloud'
+alias dot='dotcloud'
+
+# Vim is best editor...
+EDITOR=/usr/bin/vim
+
+# Add Android tools such as ADB to $PATH.
+export PATH=$PATH:/home/forkk/Programs/android-studio/sdk/platform-tools/
+
+
+# Aliases for mounting/unmounting my phone.
+alias mtpmount="mtpfs -o allow_other /mount/AndForkk"
+alias mtpumount="fusermount -u /mount/AndForkk"
+
+
+# SSH Servers
+alias wssh="ssh forkk@ws.forkk.net"
+alias bbssh="ssh forkk@bb.forkk.net"
+alias macssh="ssh user3555@L060.macincloud.com"
+
+
+# LISH
+alias lish="ssh -t forkk@lish-dallas.linode.com"
+alias lishws="ssh -t forkk@lish-dallas.linode.com forkknet-webserver"
+
+
+# CD Directory Aliases
+alias cdgo='cd $GOPATH/src/github.com/Forkk/'
+#alias cdgou='cd $GOPATH/src/github.com/Forkk/GoUpdate/'
+alias cdrm='cd $GOPATH/src/github.com/Forkk/repoman/'
+
+
+# Network Aliases
+alias netreset='sudo systemctl restart netctl-auto@wlp13s0.service'
+alias netstatus='systemctl status netctl-auto@wlp13s0.service'
+
+
+# Misc Aliases
+alias rlshrc='source /home/forkk/.bashrc' # Reload .bashrc
+alias rlbashrc='rlshrc'
+
+alias evimrc='vim /home/forkk/.vimrc && svimrc up' # Edit .vimrc and sync it with the forkk.net server.
+alias eshrc='vim /home/forkk/.bashrc && source /home/forkk/.bashrc' # Edit .bashrc and reload it.
+alias ebashrc='eshrc'
+alias eobrc='vim /home/forkk/.config/openbox/rc.xml && killall -USR2 openbox' # Edit openbox config and reload it.
+

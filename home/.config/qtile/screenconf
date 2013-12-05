@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# Configure Qtile for my different monitor setups.
+
+case $1 in
+	1)
+		echo "Using single monitor configuration."
+		xrandr --output LVDS1 --refresh 59.9782 --pos 0x0  --mode 1366x768 --primary &&
+		xrandr --output VGA1  --off
+		;;
+
+	2)
+		echo "Using dual monitor configuration."
+		xrandr --output LVDS1 --refresh 59.9782 --pos 0x0  --mode 1366x768 --primary &&
+		xrandr --output VGA1  --refresh 60      --pos 1366x-256 --mode 1280x1024
+		;;
+
+	*)
+		echo "Invalid monitor configuration \"$1\" specified. Ignoring."
+		exit 1
+		;;
+esac
+
+echo "Restarting Qtile."
+echo "restart" | qsh
+
