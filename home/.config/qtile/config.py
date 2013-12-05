@@ -119,26 +119,30 @@ mouse.append(Drag([mod], "Button3", lazy.window.set_size_floating(), start=lazy.
 from libqtile.config import Group, Match
 
 group_web = Group("Web",
-          matches=[
-              Match(wm_class=("chromium", "Chromium")),
-              ]
-         )
+        layout="max",
+        matches=[
+            Match(wm_class=("chromium", "Chromium")),
+            ]
+        )
 
 group_work = Group("Work",
-          matches=[
-              ]
-         )
+        layout="monadtall",
+        matches=[
+            ]
+        )
 
 group_irc = Group("IRC",
-          matches=[
-              Match(wm_class=("quasselclient", "Quasselclient")),
-              ]
-         )
+        layout="treetab",
+        matches=[
+            Match(wm_class=("quasselclient", "Quasselclient")),
+            Match(wm_class=("ts3client_linux_amd64", "Ts3client_linux_amd64")),
+            ]
+        )
 
 group_other = Group("Other",
-          matches=[
-              ]
-         )
+        matches=[
+            ]
+        )
 groups = [group_web, group_work, group_irc, group_other]
 
 from libqtile.dgroups import simple_key_binder
