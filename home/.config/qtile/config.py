@@ -239,6 +239,7 @@ from libqtile import hook
 @hook.subscribe.startup
 def startup():
     exec_cmd("xsetroot -cursor_name left_ptr")
+    exec_cmd("feh --bg-fill /usr/share/archlinux/wallpaper/archlinux-simplyblack.png")
     exec_once("compton -b --config .compton.conf")
     exec_once("synapse")
     exec_once("netmon")
