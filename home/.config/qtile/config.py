@@ -147,7 +147,18 @@ groups = [group_web, group_work, group_irc, group_other]
 
 from libqtile.dgroups import simple_key_binder
 dgroups_key_binder = simple_key_binder(mod)
-dgroups_app_rules = []
+
+
+
+#######################
+######## RULES ########
+#######################
+
+from libqtile.config import Rule
+
+dgroups_app_rules = [
+    Rule(Match(wm_type=["dialog"]), float=True, intrusive=True),
+]
 
 
 
@@ -257,19 +268,24 @@ def startup():
 #######################
 
 # Hacks! Woo!
-@hook.subscribe.client_new
-def client_new(win):
-    # Dialogs
-    if win.window.get_wm_type() == "dialog" or window.window.get_wm_transient_for():
-        # Float dialogs.
-        win.floating = True
-
 @hook.subscribe.client_managed
 def client_managed(win):
     # Make sure Synapse's window is always on top.
     if win.match(wmclass="synapse"):
         win.qtile.log.info("Bringing Synapse window to front.")
         win.cmd_bring_to_front()
+    elif win.window.get_wm_type() == "dialog" or win.window.get_wm_transient_for():
+        # Center dialogs.
+        wcenter = win.width//2
+        hcenter = win.height//2
+        screen = win.qtile.find_closest_screen(win.x, win.y)
+        swcenter = screen.width//2
+        shcenter = screen.height//2
+        win.place(
+                screen.x + (swcenter - wcenter),
+                screen.y + (shcenter - hcenter),
+                win.width, win.height,
+                win.borderwidth, win.bordercolor)
 
 
 
