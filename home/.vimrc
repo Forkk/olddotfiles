@@ -8,9 +8,6 @@ call vundle#rc()
 " required! 
 Bundle 'gmarik/vundle'
 
-" Solarized color scheme
-Bundle 'altercation/vim-colors-solarized'
-
 " Syntax Highlighting
 Bundle 'tpope/vim-markdown'
 Bundle "digitaltoad/vim-jade"
@@ -58,6 +55,11 @@ augroup myvimrc
 augroup END
 
 syntax enable
+set background=light
+
+
+" Color scheme
+"let 
 
 
 
