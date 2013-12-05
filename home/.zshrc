@@ -72,8 +72,16 @@ GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
 
 
-# Start SSH agent.
-eval $(keychain --eval --agents ssh -Q --quiet id_rsa)
+# Start SSH agent. My servers don't have my SSH keys, so don't do this on there.
+if [[ $HOST == "ArchForkk" ]]; then
+	eval $(keychain --eval --agents ssh -Q --quiet id_rsa)
+fi
 
 source ~/.zsh_aliases
+
+# Run configs local to the computer this file is installed on.
+# .zsh_local won't be synced across computers with my other dotfiles.
+if [ -f ~/.zsh_local ]; then
+	source ~/.zsh_local
+fi
 
