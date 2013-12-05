@@ -90,6 +90,9 @@ keys.append(Key([mod], "l", lazy.spawn("slock")))
 # File browser
 #keys.append(Key([mod], "e", lazy.spawn("nemo")))
 
+# PulseAudio volume control
+keys.append(Key([mod], "v", lazy.spawn("pavucontrol")))
+
 # Terminal
 keys.append(Key([ctrl, alt], "t", lazy.spawn("urxvt -e ~/.config/qtile/byobu-init")))
 
