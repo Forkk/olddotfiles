@@ -12,7 +12,7 @@ fi
 #openbox-session
 
 # Start the window manager.
-qtile &
+python2 ~/Projects/qtile/bin/qtile &
 
 ~/.config/qtile/quit-wait
 
