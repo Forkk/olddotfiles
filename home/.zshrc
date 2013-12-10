@@ -51,25 +51,31 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-export PATH="/usr/local/sbin:/usr/local/bin:/usr/bin:/opt/android-sdk/tools:/usr/share/java/gradle/bin:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/forkk/Programs/android-studio/sdk/platform-tools/:/home/forkk/go/bin:/home/forkk/Programs/android-studio/sdk/platform-tools/:/home/forkk/go/bin"
+
+#### PATH ####
+
+# Base path... I added ~/.bin to the beginning so scripts in my home folder's .bin directory override other stuff.
+PATH="$HOME/.bin:/usr/local/sbin:/usr/local/bin:/usr/bin"
+# Android stuff
+PATH="$PATH:/opt/android-sdk/tools:/usr/share/java/gradle/bin:/home/forkk/Programs/android-studio/sdk/platform-tools/:/home/forkk/Programs/android-studio/sdk/platform-tools/"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # Preferred editor for local and remote sessions
+# Vim is the best editor.
 export EDITOR='vim'
 
 # Compilation flags
 export ARCHFLAGS="-arch x86_64"
 
-# ssh
+# SSH key path
 export SSH_KEY_PATH="~/.ssh/rsa_id"
 
 
 # Go is best language.
 # Set $GOPATH
 GOPATH=$HOME/go
-
-# Add the Go workspace's bin folder to PATH.
-export PATH=$PATH:$GOPATH/bin
+# Add $GOPATH/bin to the path
+PATH="$PATH:$GOPATH/bin"
 
 
 # Start SSH agent. My servers don't have my SSH keys, so don't do this on there.
@@ -77,6 +83,7 @@ if [[ $HOST == "ArchForkk" ]]; then
 	eval $(keychain --eval --agents ssh -Q --quiet id_rsa)
 fi
 
+# Aliases... There's so many that they get their own file...
 source ~/.zsh_aliases
 
 # Run configs local to the computer this file is installed on.

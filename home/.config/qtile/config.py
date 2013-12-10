@@ -76,8 +76,8 @@ keys.append(Key([mod, ctrl], "r", lazy.restart()))
 keys.append(Key([mod, ctrl, shift, alt], "q", lazy.shutdown(),
             lazy.spawn("echo \"quit\" > /tmp/quitwait%s" % (os.environ["DISPLAY"].replace(":", "_")))))
 
-keys.append(Key([mod, ctrl, alt, shift], "1", lazy.spawn(os.path.expanduser("~/.config/qtile/screenconf 1"))))
-keys.append(Key([mod, ctrl, alt, shift], "2", lazy.spawn(os.path.expanduser("~/.config/qtile/screenconf 2"))))
+keys.append(Key([mod, ctrl, alt, shift], "1", lazy.spawn(os.path.expanduser("~/.bin/screenconf 1"))))
+keys.append(Key([mod, ctrl, alt, shift], "2", lazy.spawn(os.path.expanduser("~/.bin/screenconf 2"))))
 
 
 #### Application Launching
@@ -95,7 +95,7 @@ keys.append(Key([mod], "l", lazy.spawn("slock")))
 keys.append(Key([mod], "v", lazy.spawn("pavucontrol")))
 
 # Terminal
-keys.append(Key([ctrl, alt], "t", lazy.spawn("urxvt -e ~/.config/qtile/byobu-init")))
+keys.append(Key([ctrl, alt], "t", lazy.spawn("urxvt -e ~/.bin/tmux-menu")))
 
 
 

@@ -21,6 +21,8 @@
 
 # vim: set expandtab ts=4 sw=4 sts=4:
 
+# Script for listing and choosing tmux/byobu sessions.
+
 
 import os
 import re
@@ -104,8 +106,8 @@ sys.stdout.write("\nWelcome! Please choose an option.\n\n")
 while True:
     i = 1
 
-    sys.stdout.write("  n - Create a new Byobu session (%s)\n" % BYOBU_BACKEND)
-    sys.stdout.write("  s - Run a shell without Byobu (%s)\n" % SHELL)
+    sys.stdout.write("  n - Create a new tmux session (%s)\n" % BYOBU_BACKEND)
+    sys.stdout.write("  s - Run a shell without tmux (%s)\n" % SHELL)
 
     for s in text:
         sys.stdout.write("  %d - %s\n" % (i, s))

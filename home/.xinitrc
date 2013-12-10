@@ -14,5 +14,5 @@ fi
 # Start the window manager.
 python2 ~/Projects/qtile/bin/qtile &
 
-~/.config/qtile/quit-wait
+~/.bin/quit-wait
 
