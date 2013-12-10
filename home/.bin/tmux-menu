@@ -1,11 +1,13 @@
 #!/usr/bin/env python
 #
-#    byobu-select-session
+#    tmux-menu
 #    Copyright (C) 2010 Canonical Ltd.
 #    Copyright (C) 2012 Dustin Kirkland <kirkland@byobu.co>
+#    Copyright (C) 2013 Forkk
 #
 #    Authors: Dustin Kirkland <kirkland@byobu.co>
 #             Ryan C. Thompson <rct@thompsonclan.org>
+#             Forkk <forkk@forkk.net>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -18,6 +20,8 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+# This is a heavily modified version of the byobu-select-session script from byobu.
 
 # vim: set expandtab ts=4 sw=4 sts=4:
 
