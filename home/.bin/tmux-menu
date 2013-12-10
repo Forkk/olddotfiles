@@ -28,21 +28,43 @@ import os
 import re
 import sys
 import subprocess
+import tty
+import termios
+import select
+import string
+
 
 PKG = "byobu"
 SHELL = os.getenv("SHELL", "/bin/bash")
 HOME = os.getenv("HOME")
 BYOBU_CONFIG_DIR = os.getenv("BYOBU_CONFIG_DIR", HOME + "/.byobu")
 BYOBU_BACKEND = os.getenv("BYOBU_BACKEND", "tmux")
-choice = None
-sessions = []
-text = []
 
 BYOBU_UPDATE_ENVVARS = ["DISPLAY", "DBUS_SESSION_BUS_ADDRESS", "SESSION_MANAGER", "GPG_AGENT_INFO", "XDG_SESSION_COOKIE", "XDG_SESSION_PATH", "GNOME_KEYRING_CONTROL", "GNOME_KEYRING_PID", "GPG_AGENT_INFO", "SSH_AUTH_SOCK", "SSH_AGENT_PID"]
+# Hacky function to get a char from input without requiring the user to press return.
 
+def getch():
+    fd = sys.stdin.fileno()
+    old_settings = termios.tcgetattr(fd)
+    try:
+        mode = termios.tcgetattr(fd)
+        mode[tty.LFLAG] = mode[tty.LFLAG] & ~(termios.ECHO | termios.ICANON)
+        termios.tcsetattr(fd, termios.TCSAFLUSH, mode)
+        char = sys.stdin.read(1)
+        return char
+    finally:
+        termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+
+# This causes... Issues...
+#try:
+#    rw, wl, xl = select.select([fd], [], [], timeout)
+#except select.error:
+#    return
+#if rw:
 
 def get_sessions():
     sessions = []
+    text = []
     i = 0
     output = False
     if BYOBU_BACKEND == "screen":
@@ -74,7 +96,7 @@ def get_sessions():
                     text.append("tmux: %s" % s.strip())
                     sessions.append("tmux____%s" % s.split(":")[0])
                     i += 1
-    return sessions
+    return (sessions, text)
 
 
 def update_environment(session):
@@ -100,49 +122,164 @@ def attach_session(session):
     else:
         os.execvp("screen", ["", "-AOxRR", session_name])
 
-sessions = get_sessions()
+def display_menu(options, message="", default=None, max_tries=-1):
+    """
+    Displays a menu with the given options in the terminal, headed by the given message.
+    Waits for the user to select an option, and then returns that option's key.
+    If the user selects an invalid option more than ``max_tries`` times, returns None.
+    If ``max_tries`` is less than 1, the function will repeat indefinitely until a valid selection is made.
+    The ``options`` argument should be a list of two element tuples representing menu entries.
+    The first element of each tuple is the key that should be pressed to select that entry, and the second
+    element is the text to display on the menu entry.
+    """
+    # Make sure default is one of the keys in options.
+    assert default == None or default in [opt[0] for opt in options]
 
-sys.stdout.write("\nWelcome! Please choose an option.\n\n")
-while True:
-    i = 1
+    # Also make sure all keys are printable non-whitespace characters with a length of one.
+    for key, text in options: assert len(key) == 1 and not key.isspace() and key in string.printable
 
-    sys.stdout.write("  n - Create a new tmux session (%s)\n" % BYOBU_BACKEND)
-    sys.stdout.write("  s - Run a shell without tmux (%s)\n" % SHELL)
+    tries = 0
+    # Write the header message if it's valid.
+    if message != "":
+        sys.stdout.write(message + "\n");
 
-    for s in text:
-        sys.stdout.write("  %d - %s\n" % (i, s))
-        i += 1
+    # Write the list of options.
+    for key, text in options:
+        sys.stdout.write("\t[%(key)s] - %(text)s\n" % {"key": key, "text": text})
 
     try:
-        choice = input("\nChoose [n]: ").strip()
-        cint = -1
-        try: cint = int(choice)
-        except: pass
-        print(choice)
-        if cint >= 1 and cint < i or choice in ["n", "s"]:
-                break
-        else:
-                tries += 1
-                choice = ""
-                sys.stderr.write("\nERROR: Invalid input\n")
-    except KeyboardInterrupt:
-        print()
-        sys.exit(0)
-    except Exception as e:
-        print(e)
-        choice = None
-        sys.stderr.write("\nERROR: Exception\n")
+        while tries < max_tries or max_tries < 0:
+            tries += 1
 
-if choice:
-    if choice == "n":
-        # Create a new session
-        if BYOBU_BACKEND == "tmux":
-            os.execvp("byobu", ["", "new-session", SHELL])
+            if default:
+                sys.stdout.write("Select an option [%s]: " % default)
+            else:
+                sys.stdout.write("Select an option: ")
+            sys.stdout.flush()
+
+            try:
+                # Wait for the user to select an option.
+                choice = getch()
+            except KeyboardInterrupt:
+                return None
+
+            # If the user pressed return and default was set, choose the default.
+            if default != None and default != "" and choice in ["\n", "\r"]:
+                return default
+
+            if choice in [opt[0] for opt in options]:
+                # If the user chose a key that was in the list of options, return the choice.
+                return choice
+            else:
+                # Otherwise, tell the user to try again.
+                if choice.isspace() or not choice in string.printable:
+                    sys.stdout.write("\rInvalid input. ")
+                else:
+                    sys.stdout.write("\rInvalid selection: '%s' " % choice);
+    finally:
+        sys.stdout.write("\n")
+        sys.stdout.flush()
+
+
+# Maps integers to keys. Used as keys for lists of things.
+key_num_map = []
+for ctr in range(0, 9): key_num_map.append(str(ctr + 1))
+key_num_map.append('0')
+
+def main_menu():
+    """
+    Displays the main menu.
+    """
+    sessions, sessions_text = get_sessions()
+
+    # Build the main menu.
+    menu = [
+            ("n", "Create a new tmux session."),
+            ("s", "Run a shell without tmux."),
+            ("r", "Connect to a remote server via SSH."),
+    ]
+    for idx, text in enumerate(sessions_text):
+        menu.append((key_num_map[idx], text))
+
+    # Show the main menu.
+    choice = display_menu(menu, message="Welcome! Please select an option from below.")
+
+    if choice:
+        if choice == "n":
+            # Create a new session
+            if BYOBU_BACKEND == "tmux":
+                os.execvp("byobu", ["", "new-session", SHELL])
+            else:
+                os.execvp("byobu", ["", SHELL])
+        elif choice == "s":
+            os.execvp(SHELL, [SHELL])
+        elif choice == "r":
+            ssh_menu()
         else:
-            os.execvp("byobu", ["", SHELL])
-    elif choice == "s":
-        os.execvp(SHELL, [SHELL])
+            try:
+                # Translate the choice char to an index using the key_num_map list.
+                idx = key_num_map.index(choice)
+                # Attach to the chosen session; must use the binary, not the wrapper!
+                attach_session(sessions[idx])
+            except ValueError as e:
+                print("Invalid selection! This probably shouldn't happen: %s" % e)
+                sys.exit(1)
     else:
-        # Attach to the chosen session; must use the binary, not the wrapper!
-        attach_session(sessions[int(choice) - 1])
-        
+        print("Nothing was selected. Exiting.")
+
+def ssh_menu():
+    """
+    Displays a list of SSH connections available in ~/.ssh_servers
+    The file contains a list of connections. One per line in the following format:
+    <key> <user>@<address>
+    """
+
+    connections = [
+        # (<key>, <address>, <user>)
+    ]
+
+    try:
+        with open(os.path.expanduser("~/.ssh_servers")) as f:
+            for line in f.readlines():
+                # Parse the line.
+                # The key is the first character of the line.
+                key = line[0]
+                # To get the connection info, we take everything but the first char, strip whitespace, and split it at the @
+                cinfo = line[1:].strip().split("@")
+                user = cinfo[0]
+                addr = cinfo[1]
+                # Now add the entry to the connections list.
+                connections.append((key, addr, user))
+    except FileNotFoundError:
+        print("Unable to find the ssh connections list. File ~/.ssh_servers doesn't exist. Going back to the main menu.")
+        main_menu()
+        return
+
+    # Build the menu
+    back_key = "`"
+    menu = [
+            (back_key, "Go back to the main menu."),
+    ]
+
+    for idx, (key, addr, user) in enumerate(connections):
+        menu.append((key, "ssh %s@%s" % (user, addr)))
+
+    choice = display_menu(menu, message="Please select an SSH connection.", default=back_key)
+
+    if choice:
+        if choice == back_key:
+            # Go back to the main menu.
+            main_menu()
+        else:
+            try:
+                # Translate the choice char to an index.
+                addr, user = [(addr, user) for key, addr, user in connections if key == choice][0]
+                print("ssh connecting to %s@%s" % (user, addr))
+                os.execvp("ssh", ["", "%s@%s" % (user, addr)])
+            except IndexError as e:
+                print("Invalid selection! This probably shouldn't happen: %s" % e)
+                sys.exit(1)
+
+if __name__ == "__main__":
+    main_menu()
+
