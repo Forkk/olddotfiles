@@ -34,6 +34,15 @@ alias cdgo='cd $GOPATH/src/github.com/Forkk/'
 alias cdrm='cd $GOPATH/src/github.com/Forkk/repoman/'
 
 
+# SystemD Aliases
+alias status='systemctl status'
+alias start='sudo systemctl start'
+alias stop='sudo systemctl stop'
+alias restart='sudo systemctl restart'
+alias dkill='sudo systemctl kill'
+alias sdreload='sudo systemctl daemon-reload'
+
+
 # Network Aliases
 alias netreset='sudo systemctl restart netctl-auto@wlp13s0.service'
 alias netstatus='systemctl status netctl-auto@wlp13s0.service'
