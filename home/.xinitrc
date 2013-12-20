@@ -1,5 +1,5 @@
 # Make key repeat rate not retarded.
-xset r rate 250 30
+xset r rate 250 42
 
 # Disable annoying PC-speaker beeps.
 xset -b
