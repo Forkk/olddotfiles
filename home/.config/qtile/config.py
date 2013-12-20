@@ -86,7 +86,7 @@ keys.append(Key([mod, ctrl, alt, shift], "2", lazy.spawn(os.path.expanduser("~/.
 keys.append(Key([mod], "l", lazy.spawn("slock")))
 
 # Synapse for doing stuff.
-#keys.append(Key([mod], "space", lazy.spawn("synapse")))
+keys.append(Key([mod], "space", lazy.spawn("synapse")))
 
 # File browser
 #keys.append(Key([mod], "e", lazy.spawn("nemo")))
@@ -256,6 +256,8 @@ from libqtile import hook
 def startup():
     exec_cmd("xsetroot -cursor_name left_ptr")
     exec_cmd("feh --bg-fill /usr/share/archlinux/wallpaper/archlinux-simplyblack.png")
+    exec_cmd("pulseaudio --start")
+    exec_once("screencloud")
     exec_once("compton -b --config .compton.conf")
     exec_once("synapse")
     exec_once("netmon")

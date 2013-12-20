@@ -1,6 +1,9 @@
 # Make key repeat rate not retarded.
 xset r rate 250 30
 
+# Disable annoying PC-speaker beeps.
+xset -b
+
 # Load X resources for urxvt
 xrdb ~/.Xresources
 
