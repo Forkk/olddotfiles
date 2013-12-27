@@ -79,7 +79,7 @@ PATH="$PATH:$GOPATH/bin"
 
 
 # Start SSH agent. My servers don't have my SSH keys, so don't do this on there.
-if [[ $HOST == "ArchForkk" ]] || [[ $HOST == "off" ]]; then
+if [[ $HOST != "forkknet-webserver" ]]; then
 	eval $(keychain --eval --agents ssh -Q --quiet id_rsa)
 fi
 
