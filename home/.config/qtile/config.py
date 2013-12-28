@@ -95,7 +95,7 @@ keys.append(Key([mod], "space", lazy.spawn("synapse")))
 keys.append(Key([mod], "v", lazy.spawn("pavucontrol")))
 
 # Terminal
-keys.append(Key([ctrl, alt], "t", lazy.spawn("urxvt -e ~/.bin/tmux-menu")))
+keys.append(Key([ctrl, alt], "t", lazy.spawn("uxterm -e ~/.bin/tmux-menu")))
 
 
 

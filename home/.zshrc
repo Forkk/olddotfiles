@@ -92,3 +92,6 @@ if [ -f ~/.zsh_local ]; then
 	source ~/.zsh_local
 fi
 
+# Use airline's promptline prompt.
+. ~/.prompt
+
