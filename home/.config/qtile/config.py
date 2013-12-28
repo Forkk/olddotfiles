@@ -250,6 +250,10 @@ def exec_once(cmd):
     if not is_running(cmd):
         return subprocess.Popen(cmd.split())
 
+zipcode = None
+with open(os.path.expanduser("~/.zipcode")) as zcf:
+    zipcode = zcf.read()
+
 from libqtile import hook
 # start the applications at Qtile startup
 @hook.subscribe.startup
@@ -262,6 +266,8 @@ def startup():
     exec_once("synapse")
     exec_once("netmon")
     exec_once("dropboxd")
+    if zipcode:
+        exec_once("xflux -z " + zipcode)
 
 
 
