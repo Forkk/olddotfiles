@@ -80,7 +80,7 @@ def get_sessions():
 
 
 def update_environment(session):
-    session_name = session.split("____", 2)
+    _backend, session_name = session.split("____", 2)
     for var in UPDATE_ENVVARS:
         value = os.getenv(var)
         if value:
