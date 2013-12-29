@@ -259,7 +259,7 @@ from libqtile import hook
 @hook.subscribe.startup
 def startup():
     exec_cmd("xsetroot -cursor_name left_ptr")
-    exec_cmd("feh --bg-fill /usr/share/archlinux/wallpaper/archlinux-simplyblack.png")
+    exec_cmd("feh --bg-fill " + os.path.expanduser("~/.config/qtile/wallpaper.png"))
     exec_cmd("pulseaudio --start")
     exec_once("screencloud")
     exec_once("compton -b --config .compton.conf")
