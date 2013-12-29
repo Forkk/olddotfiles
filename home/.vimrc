@@ -57,8 +57,10 @@ filetype plugin indent on     " required!
 set laststatus=2
 set showtabline=2
 
-let g:airline_theme="dark"
+let g:airline_theme="light"
 let g:airline#extensions#tabline#enabled = 1
+
+let g:tmuxline_preset="tmux"
 
 " Symbols
 if !exists('g:airline_symbols')
@@ -73,6 +75,9 @@ let g:airline_right_alt_sep = ''
 let g:airline_symbols.branch = ''
 let g:airline_symbols.readonly = ''
 let g:airline_symbols.linenr = ''
+
+let g:airline#extensions#tabline#left_sep = ''
+let g:airline#extensions#tabline#left_alt_sep = ''
 
 
 " Automatically reload the .vimrc file.
