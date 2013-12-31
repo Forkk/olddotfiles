@@ -17,5 +17,5 @@ fi
 # Start the window manager.
 python2 ~/Projects/qtile/bin/qtile &
 
-~/.bin/quit-wait
+~/.bin/hevents /tmp/hevents`echo $DISPLAY | tr ':' '_'`
 

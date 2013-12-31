@@ -1,0 +1,50 @@
+#!/bin/bash
+
+# A script that reads messages from a FIFO and performs actions accordingly.
+# This is used to keep the X session open if Qtile crashes while still allowing it to be closed.
+
+if [ -z $1 ]; then
+	echo "Please specify a path to listen on."
+	exit 1
+else
+	FIFO=$1
+fi
+
+echo "Opening pipe '$FIFO'."
+
+if [[ ! -p $FIFO ]]; then
+	mkfifo $FIFO
+fi
+
+# Be sure to close the pipe when we exit.
+trap "echo \"Closing pipe '$FIFO'.\"; rm -f $FIFO" EXIT
+
+
+while true; do
+	if read line < $FIFO; then
+		case $line in
+			"quit")
+				echo "Got quit message. Exiting."
+				break
+				;;
+
+			"lock"|"suspend")
+				# This is sent from a systemd service that gets executed before suspend.
+				echo "Locking screen."
+				slock &
+				;;
+
+			"reload")
+				# Try to restart to a new version of the handle-events script after we exit... Could be dangerous, but I like to live dangerously...
+				echo "Reloading a new version of handle-events..."
+				trap "echo Restarting; $0 $FIFO" EXIT
+				echo "Exiting."
+				break
+				;;
+			*)
+				echo "Got unknown message $line."
+				;;
+		esac
+	fi
+done
+
