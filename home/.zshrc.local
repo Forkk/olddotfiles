@@ -31,8 +31,8 @@ GOPATH=$HOME/go
 PATH="$PATH:$GOPATH/bin"
 
 
-# Start SSH agent. My servers don't have my SSH keys, so don't do this on there.
-if [[ $HOST != "forkknet-webserver" ]]; then
+# Start SSH agent if keychain is installed. Otherwise, don't bother.
+if command -v keychain >/dev/null 2>&1; then
 	eval $(keychain --eval --agents ssh -Q --quiet id_rsa)
 fi
 
