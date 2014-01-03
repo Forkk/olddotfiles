@@ -73,8 +73,7 @@ for firstkey, secondkey in screen_switch_keys:
 
 
 keys.append(Key([mod, ctrl], "r", lazy.restart()))
-keys.append(Key([mod, ctrl, shift, alt], "q", lazy.shutdown(),
-            lazy.spawn("echo \"quit\" > /tmp/hevents%s" % (os.environ["DISPLAY"].replace(":", "_")))))
+keys.append(Key([mod, ctrl, shift, alt], "q", lazy.spawn("echo \"quit\" > /tmp/hevents%s" % (os.environ["DISPLAY"].replace(":", "_"))), lazy.shutdown()))
 
 keys.append(Key([mod, ctrl, alt, shift], "1", lazy.spawn(os.path.expanduser("~/.bin/screenconf 1"))))
 keys.append(Key([mod, ctrl, alt, shift], "2", lazy.spawn(os.path.expanduser("~/.bin/screenconf 2"))))

@@ -26,7 +26,6 @@ Bundle "honza/vim-snippets"
 
 " Airline and Promptline
 Bundle 'bling/vim-airline'
-Bundle 'edkolev/promptline.vim'
 Bundle 'edkolev/tmuxline.vim'
 
 " Misc.

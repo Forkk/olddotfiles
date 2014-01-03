@@ -1,0 +1,47 @@
+#### PATH ####
+
+# Base path... I added ~/.bin to the beginning so scripts in my home folder's .bin directory override other stuff.
+PATH="$HOME/.bin:/usr/local/sbin:/usr/local/bin:/usr/bin"
+# Android stuff
+PATH="$PATH:/opt/android-sdk/tools:/usr/share/java/gradle/bin:/home/forkk/Programs/android-studio/sdk/platform-tools/:/home/forkk/Programs/android-studio/sdk/platform-tools/"
+# export MANPATH="/usr/local/man:$MANPATH"
+
+#### PROMPT ####
+
+#export PROMPT=
+
+
+#### MISC SETTINGS ####
+
+# Preferred editor for local and remote sessions
+# Vim is the best editor.
+export EDITOR='vim'
+
+# Compilation flags
+export ARCHFLAGS="-arch x86_64"
+
+# SSH key path
+export SSH_KEY_PATH="~/.ssh/rsa_id"
+
+
+# Go is best language.
+# Set $GOPATH
+GOPATH=$HOME/go
+# Add $GOPATH/bin to the path
+PATH="$PATH:$GOPATH/bin"
+
+
+# Start SSH agent. My servers don't have my SSH keys, so don't do this on there.
+if [[ $HOST != "forkknet-webserver" ]]; then
+	eval $(keychain --eval --agents ssh -Q --quiet id_rsa)
+fi
+
+# Aliases... There's so many that they get their own file...
+source ~/.zsh_aliases
+
+# Run configs local to the computer this file is installed on.
+# .zsh_local won't be synced across computers with my other dotfiles.
+if [ -f ~/.zsh_local ]; then
+	source ~/.zsh_local
+fi
+

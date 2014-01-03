@@ -1,0 +1,5 @@
+# GRML zshrc config
+
+# Don't correct me. It's annoying.
+NOCOR=1
+
