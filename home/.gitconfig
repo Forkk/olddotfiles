@@ -1,0 +1,8 @@
+[user]
+	email = forkk@forkk.net
+	name = Forkk
+[core]
+	excludesfile = /home/forkk/.gitignore_global
+[alias]
+	a = add -A .
+
