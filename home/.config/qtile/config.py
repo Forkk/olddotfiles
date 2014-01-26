@@ -278,8 +278,8 @@ def startup():
 @hook.subscribe.client_managed
 def client_managed(win):
     # Make sure Synapse's window is always on top.
-    if win.match(wmclass="synapse"):
-        win.qtile.log.info("Bringing Synapse window to front.")
+    if win.match(wmclass="synapse") or win.match(wmclass="screencloud"):
+        win.qtile.log.info("Bringing window to front.")
         win.cmd_bring_to_front()
     elif win.window.get_wm_type() == "dialog" or win.window.get_wm_transient_for():
         # Center dialogs.

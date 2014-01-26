@@ -13,6 +13,8 @@ UXTerm*termName: xterm-256color
 ! UTF-8 is good. Lets do that.
 UXTerm*locale: true
 
+UXTerm*selectToClipboard: true
+
 ! Colors
 !xterm*foreground: rgb:a8/a8/a8
 !xterm*background: rgb:00/00/00

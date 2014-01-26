@@ -10,28 +10,30 @@ Bundle 'gmarik/vundle'
 
 " Syntax Highlighting
 Bundle 'tpope/vim-markdown'
-Bundle "digitaltoad/vim-jade"
+Bundle 'digitaltoad/vim-jade'
+Bundle 'jimenezrick/vimerl'
+Bundle 'vim-scripts/django.vim'
 
-" Code Completion
-Bundle 'nsf/gocode', {'rtp': 'vim/'}
-"Bundle 'vim-scripts/OmniCppComplete'
+"" Code Completion
+""Bundle 'nsf/gocode', {'rtp': 'vim/'}
+""Bundle 'vim-scripts/OmniCppComplete'
 Bundle 'Valloric/YouCompleteMe'
-Bundle 'scrooloose/syntastic'
+"Bundle 'scrooloose/syntastic'
 
-" Snippets
-Bundle "MarcWeber/vim-addon-mw-utils"
-Bundle "tomtom/tlib_vim"
-Bundle "garbas/vim-snipmate"
-Bundle "honza/vim-snippets"
+"" Snippets
+"Bundle 'MarcWeber/vim-addon-mw-utils'
+"Bundle 'tomtom/tlib_vim'
+"Bundle 'garbas/vim-snipmate'
+"Bundle 'honza/vim-snippets'
 
-" Airline and Promptline
+"" Airline and Promptline
 Bundle 'bling/vim-airline'
 Bundle 'edkolev/tmuxline.vim'
 
-" Misc.
-Bundle "xolox/vim-misc"
-Bundle "xolox/vim-session"
-Bundle "nacitar/terminalkeys.vim"
+"" Misc.
+Bundle 'xolox/vim-misc'
+Bundle 'xolox/vim-session'
+Bundle 'nacitar/terminalkeys.vim'
 
 
 filetype plugin indent on     " required!
@@ -50,6 +52,12 @@ filetype plugin indent on     " required!
 """""""""""""""""""""""""""""""
 """""""" Configuration """"""""
 """""""""""""""""""""""""""""""
+
+"""" Erlang Configuration """"
+
+" This locks up vim after saving. Get rid of it.
+let erlang_show_errors = 0
+
 
 """" Airline Configuration """"
 
@@ -156,32 +164,35 @@ inoremap <C-@> <C-x><C-o>
 autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 
-set completeopt=longest,menuone
-inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-
-inoremap <expr> <C-n> pumvisible() ? '<C-n>' :
-	\ '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
-
-inoremap <expr> <M-,> pumvisible() ? '<C-n>' :
-	\ '<C-x><C-o><C-n><C-p><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
-
-" open omni completion menu closing previous if open and opening new menu without changing the text
-inoremap <expr> <C-Space> (pumvisible() ? (col('.') > 1 ? '<Esc>i<Right>' : '<Esc>i') : '') .
-	\ '<C-x><C-o><C-r>=pumvisible() ? "\<lt>C-n>\<lt>C-p>\<lt>Down>" : ""<CR>'
-" open user completion menu closing previous if open and opening new menu without changing the text
-inoremap <expr> <S-Space> (pumvisible() ? (col('.') > 1 ? '<Esc>i<Right>' : '<Esc>i') : '') .
-	\ '<C-x><C-u><C-r>=pumvisible() ? "\<lt>C-n>\<lt>C-p>\<lt>Down>" : ""<CR>'
+"set completeopt=longest,menuone
+"inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+"
+"inoremap <expr> <C-n> pumvisible() ? '<C-n>' :
+"	\ '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+"
+"inoremap <expr> <M-,> pumvisible() ? '<C-n>' :
+"	\ '<C-x><C-o><C-n><C-p><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+"
+"" open omni completion menu closing previous if open and opening new menu without changing the text
+"inoremap <expr> <C-Space> (pumvisible() ? (col('.') > 1 ? '<Esc>i<Right>' : '<Esc>i') : '') .
+"	\ '<C-x><C-o><C-r>=pumvisible() ? "\<lt>C-n>\<lt>C-p>\<lt>Down>" : ""<CR>'
+"" open user completion menu closing previous if open and opening new menu without changing the text
+"inoremap <expr> <S-Space> (pumvisible() ? (col('.') > 1 ? '<Esc>i<Right>' : '<Esc>i') : '') .
+"	\ '<C-x><C-u><C-r>=pumvisible() ? "\<lt>C-n>\<lt>C-p>\<lt>Down>" : ""<CR>'
 
 
 """""""""""""""""""""""""""""
 """""" Editor behavior """"""
 """""""""""""""""""""""""""""
 
+" Tab completion
+set wildmenu
+set wildmode=longest:full,full
+
 " Session stuff
-let g:session_autoload="yes"
+let g:session_autoload="no"
 let g:session_autosave="yes"
-let g:session_default_to_last="yes"
-command! S OpenSession
+command! -nargs=1 S OpenSession <args>
 
 
 " Allows the cursor to be positioned one character past the end of the line in command mode.

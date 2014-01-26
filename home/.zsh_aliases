@@ -58,3 +58,14 @@ alias eshrc='vim /home/forkk/.bashrc && source /home/forkk/.bashrc' # Edit .bash
 alias ebashrc='eshrc'
 alias eobrc='vim /home/forkk/.config/openbox/rc.xml && killall -USR2 openbox' # Edit openbox config and reload it.
 
+rebar()
+{
+	# Try for a local rebar install and, if there's not one, use the global install.
+	if [ -f ./rebar ]; then
+		./rebar $@
+	else
+		echo "No local rebar. Using global installation.";
+		/usr/bin/rebar $@;
+	fi
+}
+
