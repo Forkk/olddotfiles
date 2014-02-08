@@ -12,3 +12,5 @@ Session.vim
 # workspace files are user-specific
 *.sublime-workspace
 
+.lastmk
+

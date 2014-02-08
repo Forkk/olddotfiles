@@ -13,6 +13,8 @@ Bundle 'tpope/vim-markdown'
 Bundle 'digitaltoad/vim-jade'
 Bundle 'jimenezrick/vimerl'
 Bundle 'vim-scripts/django.vim'
+Bundle "pangloss/vim-javascript"
+Bundle 'kchmck/vim-coffee-script'
 
 "" Code Completion
 ""Bundle 'nsf/gocode', {'rtp': 'vim/'}

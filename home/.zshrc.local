@@ -30,6 +30,9 @@ GOPATH=$HOME/go
 # Add $GOPATH/bin to the path
 PATH="$PATH:$GOPATH/bin"
 
+# ERL_LIBS is in ~/.erl/libs
+ERL_LIBS=/home/forkk/.erl/libs$ERL_LIBS
+
 
 # Start SSH agent if keychain is installed. Otherwise, don't bother.
 if command -v keychain >/dev/null 2>&1; then
