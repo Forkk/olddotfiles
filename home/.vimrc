@@ -8,13 +8,15 @@ call vundle#rc()
 " required! 
 Bundle 'gmarik/vundle'
 
-" Syntax Highlighting
+" Languages
 Bundle 'tpope/vim-markdown'
 Bundle 'digitaltoad/vim-jade'
 Bundle 'jimenezrick/vimerl'
 Bundle 'vim-scripts/django.vim'
 Bundle "pangloss/vim-javascript"
 Bundle 'kchmck/vim-coffee-script'
+Bundle 'lukerandall/haskellmode-vim'
+Bundle 'vim-scripts/indenthaskell.vim'
 
 "" Code Completion
 ""Bundle 'nsf/gocode', {'rtp': 'vim/'}
@@ -36,6 +38,7 @@ Bundle 'edkolev/tmuxline.vim'
 Bundle 'xolox/vim-misc'
 Bundle 'xolox/vim-session'
 Bundle 'nacitar/terminalkeys.vim'
+Bundle 'danro/rename.vim'
 
 
 filetype plugin indent on     " required!
@@ -59,6 +62,14 @@ filetype plugin indent on     " required!
 
 " This locks up vim after saving. Get rid of it.
 let erlang_show_errors = 0
+
+
+"""" Haskell Configuration """"
+
+let g:haddock_browser = '/usr/bin/chromium'
+
+au BufEnter *.hs compiler ghc
+
 
 
 """" Airline Configuration """"
