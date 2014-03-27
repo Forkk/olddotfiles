@@ -24,7 +24,10 @@ export ARCHFLAGS="-arch x86_64"
 export SSH_KEY_PATH="~/.ssh/rsa_id"
 
 
-# Go is best language.
+# Haskell
+PATH="$HOME/.cabal/bin/:$PATH"
+
+# Go
 # Set $GOPATH
 GOPATH=$HOME/go
 # Add $GOPATH/bin to the path

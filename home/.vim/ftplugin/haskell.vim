@@ -7,3 +7,14 @@ set smarttab                    "Indent instead of tab at start of line
 set shiftround                  "Round spaces to nearest shiftwidth multiple
 set nojoinspaces                "Don't convert spaces to tabs
 
+" function! Snippet(name)
+" 	exec "r".a:name
+" endfunction
+" 
+" nnoremap + :call Snippet('~/.vim/snippets/haskell/separator')<CR>
+" 
+" nnoremap <m-=> :call Snippet('~/.vim/snippets/haskell/bigsep')<CR>
+
+set foldmarker={{{,}}}
+set foldmethod=marker
+

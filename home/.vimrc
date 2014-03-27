@@ -1,3 +1,5 @@
+let maplocalleader = ','
+
 set nocompatible               " be iMproved
 filetype off                   " required!
 
@@ -13,22 +15,17 @@ Bundle 'tpope/vim-markdown'
 Bundle 'digitaltoad/vim-jade'
 Bundle 'jimenezrick/vimerl'
 Bundle 'vim-scripts/django.vim'
-Bundle "pangloss/vim-javascript"
+Bundle 'pangloss/vim-javascript'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'lukerandall/haskellmode-vim'
 Bundle 'vim-scripts/indenthaskell.vim'
 
 "" Code Completion
-""Bundle 'nsf/gocode', {'rtp': 'vim/'}
-""Bundle 'vim-scripts/OmniCppComplete'
 Bundle 'Valloric/YouCompleteMe'
-"Bundle 'scrooloose/syntastic'
+Bundle 'scrooloose/syntastic'
 
 "" Snippets
-"Bundle 'MarcWeber/vim-addon-mw-utils'
-"Bundle 'tomtom/tlib_vim'
-"Bundle 'garbas/vim-snipmate'
-"Bundle 'honza/vim-snippets'
+Bundle 'SirVer/ultisnips'
 
 "" Airline and Promptline
 Bundle 'bling/vim-airline'
@@ -39,6 +36,8 @@ Bundle 'xolox/vim-misc'
 Bundle 'xolox/vim-session'
 Bundle 'nacitar/terminalkeys.vim'
 Bundle 'danro/rename.vim'
+Bundle 'tpope/vim-surround'
+Bundle 'vim-scripts/Haskell-Conceal'
 
 
 filetype plugin indent on     " required!
@@ -66,10 +65,16 @@ let erlang_show_errors = 0
 
 """" Haskell Configuration """"
 
-let g:haddock_browser = '/usr/bin/chromium'
+let g:haddock_browser = '/usr/bin/firefox'
 
 au BufEnter *.hs compiler ghc
 
+
+"""" Mappings """"
+nnoremap ; :
+vnoremap ; :
+
+nnoremap Z zM
 
 
 """" Airline Configuration """"
@@ -224,8 +229,8 @@ set tags=./tags;
 
 
 " Tab switching
-map <C-PageUp> :tabp<CR>
-map <C-PageDown> :tabn<CR>
+map <C-PageUp> ;tabp<CR>
+map <C-PageDown> ;tabn<CR>
 
 " imap <Up> <NOP>
 " imap <Down> <NOP>

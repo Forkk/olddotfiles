@@ -1,6 +1,9 @@
 # Make key repeat rate not retarded.
 xset r rate 250 42
 
+# Set the cursor.
+xsetroot -cursor_name left_ptr
+
 # Disable annoying PC-speaker beeps.
 xset -b
 
@@ -12,10 +15,25 @@ if [ -f $HOME/.Xmodmap ]; then
 	/usr/bin/xmodmap $HOME/.Xmodmap
 fi
 
-#openbox-session
+# Set the wallpaper.
+feh --bg-fill ~/.config/qtile/wallpaper.png
+
+# Audio
+pulseaudio --start
+
+# Compositing
+compton -b --config .compton.conf
 
 # Start the window manager.
-python2 ~/Projects/qtile/bin/qtile &
+xmonad &
+
+# System Tray
+~/.xmonad/tray.sh &
+
+# Run startup apps.
+screencloud &
+dropboxd &
+
 
 ~/.bin/hevents /tmp/hevents`echo $DISPLAY | tr ':' '_'`
 
