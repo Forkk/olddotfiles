@@ -6,3 +6,5 @@
 [alias]
 	a = add -A .
 
+[push]
+	default = simple

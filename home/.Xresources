@@ -2,7 +2,7 @@
 
 ! Fonts!
 UXTerm*faceName: DejaVu Sans Mono for Powerline
-UXTerm*faceSize: 8
+UXTerm*faceSize: 11
 
 ! Double click to select whole URLs! Thanks for this, random internet person! :D
 UXTerm*charClass: 33:48,36-47:48,58-59:48,61:48,63-64:48,95:48,126:48
@@ -15,6 +15,8 @@ UXTerm*locale: true
 
 UXTerm*selectToClipboard: true
 
+! Let me know when the bell rings.
+UXTerm*bellIsUrgent: true
 
 
 

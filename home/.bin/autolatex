@@ -1,0 +1,12 @@
+#!/bin/bash
+
+FILE=$@
+
+echo "Automatically running pdflatex for $FILE."
+
+while true; do
+	sleep 1
+	inotifywait -e close_write "$FILE"
+	pdflatex "$FILE"
+done
+

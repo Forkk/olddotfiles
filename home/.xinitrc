@@ -27,6 +27,10 @@ compton -b --config .compton.conf
 # Start the window manager.
 xmonad &
 
+# Don't turn off my damn screen!
+xset -dpms
+xset s off
+
 # System Tray
 ~/.xmonad/tray.sh &
 

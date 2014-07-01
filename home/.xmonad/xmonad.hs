@@ -12,15 +12,28 @@ import XMonad.Operations
 
 import XMonad.Util.EZConfig
 import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.SetWMName
+import XMonad.Hooks.UrgencyHook
+import XMonad.Util.Types
 
 --------------- Config --------------- 
-cfg = myConfig { keys = flip mkKeymap $ myKeys }
-myConfig = defaultConfig { modMask = mod4Mask
-                         , terminal = "uxterm"
-                         , workspaces = myWorkspaces
-                         , layoutHook = myLayout
-                         }
+main = xmonad =<< cfg
+
+-- Apply some transformations to the config
+cfg = myStatusBar
+    $ withUrgencyHook dzenUrgencyHook { args = ["-bg", "red", "-fg", "white", "-xs", "1"] }
+    $ myBaseConfig
+
+myBaseConfig = defaultConfig
+    { modMask = mod4Mask
+    , terminal = "uxterm"
+    , workspaces = myWorkspaces
+    , layoutHook = myLayout
+    , keys = flip mkKeymap $ myKeys
+    , manageHook = myManageHook
+    , handleEventHook = myEventHook
+    }
 
 
 --------------- Workspaces --------------- 
@@ -29,17 +42,28 @@ myWorkspaces = ["1:Web", "2:Work", "3:IRC", "4", "5", "6", "7", "8", "9"]
 
 --------------- Layout --------------- 
 myLayout =
-    smartBorders
+      strutMod
+    . smartBorders
     -- Full layout goes first in the Web workspace.
     . onWorkspace "1:Web" (Full ||| lTall ||| mTall)
     -- On the Work workspace, we use the tabbed layout first.
     . onWorkspace "2:Work" (lTabbed ||| lTall)
     -- On the IRC workspace, we can use Tall, Mirror tall, tabbed, and full.
     . onWorkspace "3:IRC" (lTall ||| mTall ||| lTabbed ||| Full)
-    $ lTall ||| mTall ||| lTabbed ||| Full
+    $ (lTall ||| mTall ||| lTabbed ||| Full)
     where lTall     = Tall 1 (3/100) (1/2)
           mTall     = Mirror lTall
           lTabbed   = simpleTabbed
+
+layoutsMod = id
+
+
+--------------- Manage Hook --------------- 
+myManageHook = manageDocks
+
+
+--------------- Event Hook --------------- 
+myEventHook = docksEventHook
 
 
 --------------- Keys --------------- 
@@ -59,6 +83,8 @@ myKeys =
     , ("M-x",    sendMessage NextLayout)
 
     , ("M-p",    withFocused $ windows . W.sink)
+
+    , ("M-b",    sendMessage $ ToggleStrut D)
 
     -- Launch Programs
     , ("M-<Space>", spawn "dmenu_run -l 10")
@@ -87,10 +113,12 @@ myKeys =
 myStatusBar cfg =
     statusBar "xmobar ~/.xmonad/xmobar.cfg" xmobarPP toggleBarKey cfg
 
-
-toggleBarKey XConfig{modMask = modm} = (modm, xK_b)
-
-main = xmonad =<< myStatusBar cfg
+toggleBarKey XConfig{modMask = modm} = (modm, xK_n)
 
 
+--------------- Dock Struts --------------- 
+
+-- Avoid struts on the top, left, and right sides of the screen.
+-- dzen2 at the top should render over other windows.
+strutMod = avoidStrutsOn [U, L, R]
 

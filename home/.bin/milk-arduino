@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# Milk for your serial connection.
+# A simple shell script that sets up serial options for an Arduino and then opens the serial port with cat.
+
+SERIAL_PORT=`ls -1 /dev/ttyUSB* | head -1`
+echo "Detected serial port: $SERIAL_PORT"
+
+# Trap SIGINT and exit "gracefully."
+trap "echo; echo 'Closing serial connection.'; exit 0;" SIGINT SIGTERM
+
+# Ensure the serial port exists and is a character device.
+if [ -c $SERIAL_PORT ]; then
+	# Die if something bad happens here.
+	set +e
+
+	# First, set up the TTY settings for the Arduino.
+	stty -F $SERIAL_PORT cs8 9600 ignbrk -brkint -icrnl -imaxbel -opost -onlcr -isig -icanon -iexten -echo -echoe -echok -echoctl -echoke noflsh -ixon -crtscts
+
+	echo "Opening serial port $SERIAL_PORT"
+
+	# Quit screen in 0.5 seconds.
+	{ sleep 0.5; screen -X -S arduino-serial quit; } &
+
+	# Run screen to "re-capture" the serial port.
+	screen -S arduino-serial $SERIAL_PORT
+
+	# Wait for a bit while screen does its thing...
+	sleep 0.2
+
+	# Quit screen
+	#screen -r arduino-serial -m quit
+
+	set -e
+
+	# Now, open to the serial port for reading.
+	cat $SERIAL_PORT
+else
+	echo "Error: $SERIAL_PORT is not a valid character device."
+	exit 1
+fi
+

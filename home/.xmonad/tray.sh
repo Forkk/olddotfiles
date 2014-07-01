@@ -7,7 +7,7 @@ trayer --edge bottom \
        --SetPartialStrut true \
        --expand true \
        \
-       --width 6 \
+       --width 9 \
        --height 24 \
        \
        --transparent true \

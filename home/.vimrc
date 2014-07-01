@@ -1,5 +1,9 @@
 let maplocalleader = ','
 
+" Make YCM not load by default.
+" This is done by simply telling it that it's already loaded.
+let g:loaded_youcompleteme = 1
+
 set nocompatible               " be iMproved
 filetype off                   " required!
 
@@ -19,6 +23,9 @@ Bundle 'pangloss/vim-javascript'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'lukerandall/haskellmode-vim'
 Bundle 'vim-scripts/indenthaskell.vim'
+Bundle 'xuhdev/vim-latex-live-preview'
+Bundle 'groenewege/vim-less'
+Bundle 'tclem/vim-arduino'
 
 "" Code Completion
 Bundle 'Valloric/YouCompleteMe'
@@ -32,12 +39,17 @@ Bundle 'bling/vim-airline'
 Bundle 'edkolev/tmuxline.vim'
 
 "" Misc.
+Bundle 'tpope/vim-fugitive'
+Bundle 'tpope/vim-commentary'
+Bundle 'bkad/CamelCaseMotion'
 Bundle 'xolox/vim-misc'
 Bundle 'xolox/vim-session'
 Bundle 'nacitar/terminalkeys.vim'
 Bundle 'danro/rename.vim'
 Bundle 'tpope/vim-surround'
-Bundle 'vim-scripts/Haskell-Conceal'
+Bundle 'tpope/vim-repeat'
+Bundle 'pbrisbin/html-template-syntax'
+" Bundle 'vim-scripts/Haskell-Conceal'
 
 
 filetype plugin indent on     " required!
@@ -68,6 +80,27 @@ let erlang_show_errors = 0
 let g:haddock_browser = '/usr/bin/firefox'
 
 au BufEnter *.hs compiler ghc
+au BufNewFile,BufRead *.tpl set filetype=html
+
+
+"""" LaTeX Configuration """"
+
+let g:livepreview_previewer = 'evince'
+
+
+"""" Arduino Configuration """"
+
+let g:vim_arduino_library_path = '/usr/share/arduino'
+let g:vim_arduino_serial_port = '/dev/ttyUSB0'
+
+
+""" Swapfiles """
+
+" Put swapfiles in ~/.vim/tmp/
+" This fixes things like docpad, which watch for file changes.
+set backupdir=~/.vim/tmp/backup//
+set directory=~/.vim/tmp/swap//
+set undodir=~/.vim/tmp/undo//
 
 
 """" Mappings """"
@@ -91,6 +124,10 @@ let g:tmuxline_preset="tmux"
 if !exists('g:airline_symbols')
 	let g:airline_symbols = {}
 endif
+
+" Fuck trailing whitespace
+"set list listchars=trail:.
+"highlight SpecialKey ctermfg=Red ctermbg=Red
 
 " powerline symbols
 let g:airline_left_sep = ''

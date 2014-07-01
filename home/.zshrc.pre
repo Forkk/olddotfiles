@@ -3,3 +3,7 @@
 # Don't correct me. It's annoying.
 NOCOR=1
 
+# Stop changing my damn titles. I can set them myself.
+NOTITLE=1
+NOPRECMD=1
+
