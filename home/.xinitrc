@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Make key repeat rate not retarded.
 xset r rate 250 42
 

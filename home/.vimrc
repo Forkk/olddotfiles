@@ -26,6 +26,7 @@ Bundle 'vim-scripts/indenthaskell.vim'
 Bundle 'xuhdev/vim-latex-live-preview'
 Bundle 'groenewege/vim-less'
 Bundle 'tclem/vim-arduino'
+Bundle 'dag/vim-fish'
 
 "" Code Completion
 Bundle 'Valloric/YouCompleteMe'
