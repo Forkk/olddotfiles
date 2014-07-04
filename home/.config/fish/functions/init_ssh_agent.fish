@@ -28,6 +28,9 @@ function start_ssh_agent
 	# Write the environment variables to files.
 	echo $SSH_AGENT_PID > $agent_dir/pid
 	echo $SSH_AUTH_SOCK > $agent_dir/sock
+
+	# Add my SSH keys.
+	ssh-add (cat ~/.ssh/agent-keys)
 end
 
 # This function loads the appropriate environment variables to use an existing

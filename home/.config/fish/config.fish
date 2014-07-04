@@ -34,9 +34,6 @@ set -g ARCHFLAGS "-arch x86_64"
 #### SSH AGENT ####
 
 init_ssh_agent
-# Add my SSH keys.
-and ssh-add ~/.ssh/id_rsa
-
 
 #### TMUXINATOR ####
 
