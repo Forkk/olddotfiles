@@ -25,7 +25,7 @@ set -g fish_user_paths $fish_user_paths $HOME/.gem/ruby/2.1.0/bin
 
 # Preferred editor for local and remote sessions
 # Vim is the best editor.
-set -g EDITOR 'vim'
+set -g EDITOR '/usr/bin/vim'
 
 # Compilation flags
 set -g ARCHFLAGS "-arch x86_64"
@@ -33,8 +33,9 @@ set -g ARCHFLAGS "-arch x86_64"
 
 #### SSH AGENT ####
 
-# Start SSH agent if keychain is installed.
-eval (keychain --eval --agents ssh -Q --quiet id_rsa)
+init_ssh_agent
+# Add my SSH keys.
+and ssh-add ~/.ssh/id_rsa
 
 
 #### TMUXINATOR ####
@@ -49,7 +50,7 @@ eval (keychain --eval --agents ssh -Q --quiet id_rsa)
 
 # Run configs local to the computer this file is installed on.
 # .zsh_local won't be synced across computers with my other dotfiles.
-if test -f ~/.fish_local; then
+if test -f ~/.fish_local
 	source ~/.fish_local
 end
 

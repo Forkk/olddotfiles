@@ -3,6 +3,7 @@
 	name = Forkk
 [core]
 	excludesfile = /home/forkk/.gitignore_global
+	editor = vim
 [alias]
 	a = add -A .
 
