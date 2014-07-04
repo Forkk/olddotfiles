@@ -35,6 +35,5 @@ end
 function use_ssh_agent
 	set SSH_AGENT_PID (cat $agent_dir/pid)
 	set SSH_AUTH_SOCK (cat $agent_dir/sock)
-	echo "Using existing SSH agent with pid $SSH_AGENT_PID."
 end
 
