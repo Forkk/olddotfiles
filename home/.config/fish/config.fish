@@ -55,3 +55,12 @@ if test -f ~/.fish_local
 end
 
 
+#### COLORS AND GREETING ####
+
+source ~/.config/fish/colors.fish
+
+# If we need to update the color settings in the universal variables, do so.
+if [ $fish_color_vsn -ne $fish_color_file_vsn ]
+	set_fish_colors
+end
+
