@@ -18,7 +18,7 @@ if [ -f $HOME/.Xmodmap ]; then
 fi
 
 # Set the wallpaper.
-feh --bg-fill ~/.config/qtile/wallpaper.png
+feh --bg-fill ~/.wallpaper/yosemite-waterfall.jpg
 
 # Audio
 pulseaudio --start
