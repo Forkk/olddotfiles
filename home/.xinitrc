@@ -26,6 +26,13 @@ pulseaudio --start
 # Compositing
 compton -b --config .compton.conf
 
+# Input Method
+export XMODIFIERS='@im=scim'
+export GTK_IM_MODULE='scim'
+export QT_IM_MODULE='scim'
+scim -d
+#uim-xim &
+
 # Start the window manager.
 xmonad &
 
