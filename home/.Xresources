@@ -114,7 +114,7 @@ URxvt*fading: 5
 ! URxvt*borderColor: colour
 
 ! Select the fonts to be used. This is a comma separated list of font names that are checked in order when trying to find glyphs for characters. The first font defines the cell
-URxvt*font: xft:Monospace-8
+URxvt*font: xft:Monospace-12
 
 ! URxvt*boldFont:
 
