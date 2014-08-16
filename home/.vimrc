@@ -28,18 +28,18 @@ Bundle 'groenewege/vim-less'
 Bundle 'tclem/vim-arduino'
 Bundle 'dag/vim-fish'
 
-"" Code Completion
+" Code Completion
 Bundle 'Valloric/YouCompleteMe'
 Bundle 'scrooloose/syntastic'
 
-"" Snippets
+" Snippets
 Bundle 'SirVer/ultisnips'
 
-"" Airline and Promptline
+" Airline
 Bundle 'bling/vim-airline'
 Bundle 'edkolev/tmuxline.vim'
 
-"" Misc.
+" Misc.
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-commentary'
 Bundle 'bkad/CamelCaseMotion'
@@ -104,6 +104,10 @@ set directory=~/.vim/tmp/swap//
 set undodir=~/.vim/tmp/undo//
 
 
+""" Column Margin """
+set colorcolumn=80
+
+
 """" Mappings """"
 nnoremap ; :
 vnoremap ; :
@@ -126,11 +130,12 @@ if !exists('g:airline_symbols')
 	let g:airline_symbols = {}
 endif
 
-" Fuck trailing whitespace
-"set list listchars=trail:.
-"highlight SpecialKey ctermfg=Red ctermbg=Red
+" Trailing whitespace is bad.
+" set list listchars=trail:.
+" highlight SpecialKey ctermfg=Red ctermbg=Red
 
-" powerline symbols
+
+" Airline symbols
 let g:airline_left_sep = ''
 let g:airline_left_alt_sep = ''
 let g:airline_right_sep = ''
@@ -154,23 +159,14 @@ syntax enable
 set background=light
 
 
-" Color scheme
-"let 
-
-
 
 """"""""""""""""""""""""""""""""""""""
 """""" Custom keys and commands """"""
 """"""""""""""""""""""""""""""""""""""
 
-" Reload .vimrc with :Rlc command.
-command! Rlc so $MYVIMRC
-
 " Make :Q do the same thing as :q.
 command! Q q
 
-" Sudo save with :W
-"command! W :execute ':silent w !sudo tee % > /dev/null' | :edit!
 
 " Make Up/Down/Home/End keys behave graphically.
 
@@ -199,6 +195,7 @@ call NoremapNormalCmd("<End>", 0, "g<End>")
 " PageUp/PageDown preserve relative cursor position
 call NoremapNormalCmd("<PageUp>", 0, "<C-U>", "<C-U>")
 call NoremapNormalCmd("<PageDown>", 0, "<C-D>", "<C-D>")
+
 
 " nnoremap <Up> gk
 " nnoremap <Down> gj
@@ -249,6 +246,21 @@ set wildmode=longest:full,full
 let g:session_autoload="no"
 let g:session_autosave="yes"
 command! -nargs=1 S OpenSession <args>
+
+" Line numbering
+set nonumber
+set relativenumber
+function! NumberToggle()
+	if (&relativenumber == 1)
+		set number
+		set norelativenumber
+	else
+		set nonumber
+		set relativenumber
+	endif
+endfunc
+
+nnoremap <C-n> :call NumberToggle()<cr>
 
 
 " Allows the cursor to be positioned one character past the end of the line in command mode.
